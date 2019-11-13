@@ -1,0 +1,24 @@
+.content= post.content
+  
+.tags.badges
+  each tag in post.tags
+    span.badge.badge-phill.badge-secondary= tag
+    | 
+.row
+  .col-sm
+    .numbers.
+      #[span.number.num-votes= post.numLikes] likes,
+      #[span.number.num-answers= post.numAnswers] answers,
+      #[span.number.num-views= post.numReads] reads
+  
+
+  
+  script.
+    $(function() {
+      $('.delete-btn').click(function() {
+        if (confirm('Are you sure to delete?')) {
+          location = $(this).data('url');
+        }
+        return false;
+      });
+    });

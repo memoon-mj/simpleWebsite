@@ -1,0 +1,16 @@
+.answer.card
+  .numbers.like-badge
+    .number
+      span.number.num-votes= post.numLikes
+    .button
+      a.like(href='#', data-id=answer.id)
+        i.fa.fa-thumbs-up
+        | 
+        | Like
+
+  .card-body
+    .content= answer.content
+  .row.card-body
+    .col-sm
+    .col-sm.text-right
+    

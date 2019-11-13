@@ -1,0 +1,25 @@
+extends ../layout
+
+include ../includes/_paginate
+
+block content
+ 
+    h1.main-title 
+      | posts
+      if posts.total > 0
+        .small Total #{posts.total} post(s)
+        
+
+    if posts.total <= 0 
+      .alert.alert-info No posts available yet
+    else
+      .posts
+        each post in posts.docs
+          .post
+            a.title(href=`/posts/${post.id}`)= post.title
+            include _post
+
+      +paginate(posts, '/posts', query)
+
+    hr
+    a.btn.btn-primary(href='/posts/new') Make post
