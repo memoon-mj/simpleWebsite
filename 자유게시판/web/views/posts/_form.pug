@@ -1,0 +1,10 @@
+.form-group
+  label(for="title") Title
+  input.form-control(type="text", name="title", placeholder="What's your post?", value=post.title)
+.form-group
+  label(for="name") Name
+  textarea.form-control(type="text", name="name", placeholder="what's your name?", value=post.name)
+.form-group
+  label(for="post") post
+  textarea.form-control(name="content", rows="5")= post.content
+

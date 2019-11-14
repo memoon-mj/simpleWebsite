@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+  .container
+    h1.main-title= post.title
+
+    .post.show
+    include _post
+
+      .buttons
+        a.btn.btn-outline-secondary(href=`/posts/${post.id}/edit`) Edit
+        | 
+        a.btn.btn-outline-danger.delete-btn(href="#", data-url=`/posts/${post.id}?_method=delete`) Delete
+      
+    if post.numAnswers > 0
+      hr
+      h3 #{post.numAnswers} Answer(s)
+      .answers.show
+        each answer in answers
+          include _answer
+
+    form(action=`/posts/${post.id}/answers`, method='POST')
+      .form-group
+        label(for='answer') Your Answer
+        textarea.form-control(name="content", rows="5")
+      button.btn.btn-primary(type="submit") Post Your Answer
+
+  script.
+    $(function() {
+      $('.delete-btn').click(function() {
+        if (confirm('Are you sure to delete?')) {
+          location = $(this).data('url');
+        }
+        return false;
+      });
+    });

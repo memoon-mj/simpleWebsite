@@ -1,0 +1,8 @@
+.content= post.content
+    | 
+.row    
+  .col-sm
+      | posted on #{moment(post.reg_date).format('YYYY-MM-DD')}
+      if post.name
+        | 
+        | by #[a(href=`/users/${post.name}`)= post.name] 
