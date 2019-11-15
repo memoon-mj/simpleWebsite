@@ -26,7 +26,7 @@ router.get('/', catchErrors(async (req, res, next) => {
   res.render('posts/index', {posts: posts, query: req.query});
 }));
 
-//게시글 생성
+//new post
 router.get('/new', (req, res, next) => {
   res.render('posts/new', {post: {}});
 });
@@ -42,7 +42,22 @@ router.post('/', catchErrors(async (req, res, next) => {
   res.redirect('/posts');
 }));
 
-//상세보기
+//edit
+router.get('/:id/edit', catchErrors(async (req, res, next) => {
+  const post = await Post.findById(req.params.id);
+  res.render('posts/edit', {post: post});
+}));
+
+router.post('/:id', catchErrors(async (req,res,next) => {
+  await Post.findOneAndUpdate({_id: req.params.id},
+    {title:req.body.title},
+    {content:req.body.content},
+    {contetn:req.body.name})
+  req.flash('success', 'Successfully updated');
+  res.redirect('/posts');
+}));
+
+//show
 router.get('/:id', catchErrors(async (req, res, next) => {
   const post = await Post.findById(req.params.id);
   const answers = await Answer.find({post: post.id});
@@ -58,24 +73,10 @@ router.delete('/:id', catchErrors(async (req, res, next) => {
   res.redirect('/posts');
 }));
 
-//edit
-router.put('/:id/update', catchErrors(async (req, res, next) => {
-  const post = await Post.findById(req.params.id);
 
-  if (!post) {
-    req.flash('danger', 'Not exist post');
-    return res.redirect('back');
-  }
-  post.title = req.body.title;
-  post.content = req.body.content;
-  post.tags = req.body.tags.split(" ").map(e => e.trim());
 
-  await post.save();
-  req.flash('success', 'Successfully updated');
-  res.redirect('/posts');
-}));
 
-//답글달기
+//answer
 router.post('/:id/answers', catchErrors(async (req, res, next) => {
   const post = await Post.findById(req.params.id);
   if (!post) {
