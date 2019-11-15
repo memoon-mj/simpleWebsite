@@ -9,7 +9,6 @@ block content
       if posts.total > 0
         .small Total #{posts.total} post(s)
         
-
     if posts.total <= 0 
       .alert.alert-info No posts available yet
     else
@@ -23,3 +22,12 @@ block content
 
     hr
     a.btn.btn-primary(href='/posts/new') Make post
+    script.
+      $(function() {
+        $('.delete-btn').click(function() {
+          if (confirm('Are you sure to delete?')) {
+            location = $(this).data('url');
+          }
+          return false;
+        });
+      });

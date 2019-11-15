@@ -5,13 +5,21 @@ block content
     h1.main-title= post.title
 
     .post.show
-    include _post
+      .content= post.content
+      .row
+        .col-sm
+          .numbers.
+            #[span.number.num-answers= post.numAnswers] answers,
+        .col-sm
+          .name
+            | asked on #{moment(post.createdAt).format('YYYY-MM-DD')}
+            if post.name
+              | by #[a(href=`/post/${post.name}`)= post.name] 
 
       .buttons
         a.btn.btn-outline-secondary(href=`/posts/${post.id}/edit`) Edit
-        | 
-        a.btn.btn-outline-danger.delete-btn(href="#", data-url=`/posts/${post.id}?_method=delete`) Delete
-      
+
+              
     if post.numAnswers > 0
       hr
       h3 #{post.numAnswers} Answer(s)
@@ -25,12 +33,4 @@ block content
         textarea.form-control(name="content", rows="5")
       button.btn.btn-primary(type="submit") Post Your Answer
 
-  script.
-    $(function() {
-      $('.delete-btn').click(function() {
-        if (confirm('Are you sure to delete?')) {
-          location = $(this).data('url');
-        }
-        return false;
-      });
-    });
+

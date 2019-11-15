@@ -1,8 +1,21 @@
+
 .content= post.content
-    | 
-.row    
+
+.row
   .col-sm
-      | posted on #{moment(post.reg_date).format('YYYY-MM-DD')}
+    .numbers.
+      #[span.number.num-answers= post.numAnswers] answers,
+      #[span.number.num-views= post.numReads] reads
+  .col-sm
+    .name
+      | asked on #{moment(post.createdAt).format('YYYY-MM-DD')}
       if post.name
-        | 
-        | by #[a(href=`/users/${post.name}`)= post.name] 
+        | by #[a(href=`/post/${post.name}`)= post.name] 
+      .buttons
+            a.btn.btn-outline-danger.delete-btn(href="#", data-url=`/posts/${post.id}?_method=delete`) Delete 
+
+
+   
+
+  
+

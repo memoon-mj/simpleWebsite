@@ -51,24 +51,39 @@ router.get('/:id', catchErrors(async (req, res, next) => {
   res.render('posts/show', {post: post, answers: answers});
 }));
 
-//삭제하기
+//delete
 router.delete('/:id', catchErrors(async (req, res, next) => {
   await Post.findOneAndRemove({_id: req.params.id});
   req.flash('success', 'Successfully deleted');
   res.redirect('/posts');
 }));
 
-//답글달기
-router.post('/:id/answers',   catchErrors(async (req, res, next) => {
+//edit
+router.put('/:id/update', catchErrors(async (req, res, next) => {
   const post = await Post.findById(req.params.id);
 
   if (!post) {
     req.flash('danger', 'Not exist post');
     return res.redirect('back');
   }
+  post.title = req.body.title;
+  post.content = req.body.content;
+  post.tags = req.body.tags.split(" ").map(e => e.trim());
+
+  await post.save();
+  req.flash('success', 'Successfully updated');
+  res.redirect('/posts');
+}));
+
+//답글달기
+router.post('/:id/answers', catchErrors(async (req, res, next) => {
+  const post = await Post.findById(req.params.id);
+  if (!post) {
+    req.flash('danger', 'Not exist post');
+    return res.redirect('back');
+  }
 
   var answer = new Answer({
-    name: req.body.content,
     post: post._id,
     content: req.body.content
   });
@@ -79,7 +94,4 @@ router.post('/:id/answers',   catchErrors(async (req, res, next) => {
   req.flash('success', 'Successfully answered');
   res.redirect(`/posts/${req.params.id}`);
 }));
-
-
-
 module.exports = router;
