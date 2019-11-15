@@ -49,8 +49,7 @@ router.get('/:id/edit', catchErrors(async (req, res, next) => {
 }));
 
 router.post('/:id', catchErrors(async (req,res,next) => {
-  await Post.findOneAndUpdate({_id: req.params.id},
-    {title:req.body.title},
+  await Post.findOneAndUpdate({title:req.body.title},
     {content:req.body.content},
     {contetn:req.body.name})
   req.flash('success', 'Successfully updated');
